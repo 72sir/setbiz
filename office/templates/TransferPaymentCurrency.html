@@ -1,0 +1,84 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block regiter %}
+	<!--start wrapper-->
+	<section class="wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <nav id="breadcrumbs">
+                        <ul>
+                            <li>Вы здесь:</li>
+                            <li><a href="/">Главная</a></li>
+                            <li><a href="/tovar/">Каталог</a></li>
+                            <li>Поиск заказа по ключу</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <div class="dividerHeading">
+                        <h4><span>Поиск заказа по ключу</span></h4>
+                    </div>
+                    {% if errors_payment %}
+                        <div class="row">
+                            <h4 style="color: darkred; "><span>{{ errors_payment }}</span></h4>
+                        </div>
+                    {% endif %}
+
+                    <form action="/office/wallet/payment/" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                                    <label>Ключ оплаты:</label>
+                                    <input type="text" id="id_paymentKey" name="paymentKey" class="form-control" maxlength="50" data-msg-required="Пожалуйста введите ключ оплаты заказа." placeholder="Ключ оплаты заказа" required>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <!-- Indicates a successful or positive action -->
+                                    <label>&nbsp;</label>
+                                    <button class="btn btn-success btn-lg btn-block" type="submit"> <i class="fa fa-user"></i> Поиск</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+
+
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4">
+
+                </div>
+
+            </div>
+        </div>
+	</section>
+	<!--end wrapper-->
+
+{% endblock %}

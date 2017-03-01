@@ -1,0 +1,370 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block matrix %}
+<!--start wrapper-->
+<section class="wrapper" xmlns="">
+
+    <!-- хлебные крошки -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <nav id="breadcrumbs">
+                    <ul>
+                        <li>Вы здесь:</li>
+                        <li><a href="/">Главная</a></li>
+                        <li>Стол заказов</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Контекст страницы -->
+    <section class="about">
+        <div class="container">
+            <!-- Матрица -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="dividerHeading">
+                        <h4><span>Стол заказов</span></h4>
+                    </div>
+                </div>
+            </div>
+            <!-- Ошибки -->
+            {% if errors %}
+            <div class="row sub_content">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <h2>Ошибки профиля:</h2>
+                    <h2 style="color: red;">{{ errors }}</h2>
+                </div>
+            </div>
+            {% endif %}
+            <!-- Стол заказов -->
+            <div class="row sub_content">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <!-- Действия со столом -->
+                    <p> <b>Рекомендатель</b>: <a href="/marketing/anketa/{{ user.parent.pk }}/"> {{ user.parent }} </a> </p>
+                    <hr>
+                    <h4> Реферальная ссылка: </h4>
+                    <p> <a href="http://www.setbiz.ru/{{ user.pk }}/">www.setbiz.ru/{{ user.pk }}/</a> </p>
+                    <hr>
+                    <h4> Баланс: 0</h4>
+                    <hr>
+                    <h4> Начисления:</h4>
+                    <p> Бонус по закрытию стола: 0 </p>
+                    <hr>
+                    <h4> Структура: </h4>
+                    <p><a href="/marketing/">Активирванных аккаунтов: {{ user.active_is_structure }}</a></p>
+                    <p>Неактивных аккаунтов: {{ user.structure }}</p>
+                    <hr>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <table width="100%" style="height: 300px; text-align: center;">
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <table style="width: 100%;">
+                                        <tr style="">
+                                            <td  style="width: 100%; border: 5px solid #89b6d6 !important; ">
+
+                                            <div class="post_meta">
+                                                <h2 {% if desk.largeDesk_User == parent %} style="color: red;" {% endif %} >
+                                                    <a href="/marketing/anketa/{{ desk.largeDesk_User.pk }}/">{{ desk.largeDesk_User.username }}</a>
+                                                </h2>
+
+                                                <div class="metaInfo">
+                                                    <span><i class="fa fa-user"></i> <a href="#">{{ desk.largeDesk_User.active_is_structure }}</a> </span>
+                                                    <span><i class="fa fa-tag"></i> <a href="#">ID {{ desk.largeDesk_User.pk }}</a>, <a href="/{{ desk.largeDesk_User.pk }}/">Ссылка</a> </span>
+                                                    <span><a href="/message/send/{{ desk.largeDesk_User.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                </div>
+                                            </div>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <table style="width: 100%; ">
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td  style=" border-right: 2px solid #1e3f54;"><div class="">&nbsp;</div></td>
+                                            <td  style="">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td style="border-top: 3px solid #1e3f54; border-left: 2px solid #1e3f54;">&nbsp;</td>
+                                            <td style="border-top: 3px solid #1e3f54; border-right: 2px solid #1e3f54;">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+
+                                    <table style="width: 100%;">
+                                        <tr style="">
+                                            <td  style="width: 100%; border: 5px solid #89b6d6 !important; ">
+
+                                                {% if largeDeskLeft.smallDesk_UserInHead == parent %}
+                                                    <h4 style="color: red; text-align: center; ">&nbsp;{{ largeDeskLeft.smallDesk_UserInHead.username }}</h4>
+                                                    <div class="metaInfo">
+                                                        <span><i class="fa fa-user"></i><a href="#">{{ largeDeskLeft.smallDesk_UserInHead.active_is_structure }}</a></span>
+                                                        <span><i class="fa fa-tag"></i><a href="#">ID {{ largeDeskLeft.smallDesk_UserInHead.pk }}</a>, <a href="/{{ largeDeskLeft.smallDesk_UserInHead.pk }}/">Ссылка</a> </span>
+                                                        <span><a href="/message/send/{{ largeDeskLeft.smallDesk_UserInHead.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                    </div>
+
+                                                {% elif largeDeskLeft.smallDesk_UserInHead == None %}
+                                                    <h4 style="text-align: center; ">&nbsp;Стол закрыт </h4>
+                                                    <div class="metaInfo">
+                                                        <span><i class="fa fa-user"></i><a href="#"></a></span>
+                                                        <span><i class="fa fa-tag"></i></span>
+                                                        <span><i class="fa fa-comments"></i> </span>
+                                                    </div>
+                                                {% else %}
+                                                    <h4 style="text-align: center; ">&nbsp;<a href="/marketing/anketa/{{ largeDeskLeft.smallDesk_UserInHead.pk }}/">{{ largeDeskLeft.smallDesk_UserInHead.username }}</a></h4>
+                                                    <div class="metaInfo">
+                                                        <span><i class="fa fa-user"></i><a href="#">{{ largeDeskLeft.smallDesk_UserInHead.active_is_structure }}</a></span>
+                                                        <span><i class="fa fa-tag"></i><a href="#">ID {{ largeDeskLeft.smallDesk_UserInHead.pk }}</a>, <a href="/{{ largeDeskLeft.smallDesk_UserInHead.pk }}/">Ссылка</a> </span>
+                                                        <span><a href="/message/send/{{ largeDeskLeft.smallDesk_UserInHead.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                            <td>&nbsp;</td>
+
+                                        </tr>
+                                    </table>
+
+                                    <table style="width: 100%; ">
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td  style=" border-right: 2px solid #1e3f54;"><div class="">&nbsp;</div></td>
+                                            <td  style="">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td style="border-top: 3px solid #1e3f54; border-left: 2px solid #1e3f54;">&nbsp;</td>
+                                            <td style="border-top: 3px solid #1e3f54; border-right: 2px solid #1e3f54;">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+
+                                <td colspan="2">
+
+                                    <table style="width: 100%;">
+                                        <tr style="">
+                                            <td>&nbsp;</td>
+                                            <td  style="width: 100%; border: 5px solid #89b6d6 !important; ">
+                                                {% if largeDeskRight.smallDesk_UserInHead == parent %}
+                                                    <h4 style="color: red; text-align: center; ">&nbsp;{{ largeDeskRight.smallDesk_UserInHead.username }}</h4>
+                                                    <div class="metaInfo">
+                                                        <span><i class="fa fa-user"></i><a href="#">{{ largeDeskRight.smallDesk_UserInHead.active_is_structure }}</a> </span>
+                                                        <span><i class="fa fa-tag"></i><a href="#">ID {{ largeDeskRight.smallDesk_UserInHead.pk }}</a>, <a href="/{{ largeDeskRight.smallDesk_UserInHead.pk }}/">Ссылка</a> </span>
+                                                        <span><a href="/message/send/{{ largeDeskRight.smallDesk_UserInHead.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                    </div>
+                                                {% elif largeDeskRight.smallDesk_UserInHead == None %}
+                                                    <h4 style="background: #fff; text-align: center; ">&nbsp;Стол закрыт </h4>
+                                                    <div class="metaInfo">
+                                                        <span><i class="fa fa-user"></i><a href="#"></a></span>
+                                                        <span><i class="fa fa-tag"></i></span>
+                                                        <span><i class="fa fa-comments"></i> </span>
+                                                    </div>
+                                                {% else %}
+                                                    <h4 style="text-align: center; ">&nbsp;<a href="/marketing/anketa/{{ largeDeskRight.smallDesk_UserInHead.pk }}/">{{ largeDeskRight.smallDesk_UserInHead.username }}</a></h4>
+                                                    <div class="metaInfo">
+                                                        <span><i class="fa fa-user"></i><a href="#">{{ largeDeskRight.smallDesk_UserInHead.active_is_structure }}</a></span>
+                                                        <span><i class="fa fa-tag"></i><a href="#">ID {{ largeDeskRight.smallDesk_UserInHead.pk }}</a>, <a href="/{{ largeDeskRight.smallDesk_UserInHead.pk }}/">Ссылка</a></span>
+                                                        <span><a href="/message/send/{{ largeDeskRight.smallDesk_UserInHead.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                    </div>
+                                                {% endif %}
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <table style="width: 100%; ">
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td  style=" border-right: 2px solid #1e3f54;"><div class="">&nbsp;</div></td>
+                                            <td  style="">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td style="border-top: 3px solid #1e3f54; border-left: 2px solid #1e3f54;">&nbsp;</td>
+                                            <td style="border-top: 3px solid #1e3f54; border-right: 2px solid #1e3f54;">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="25%">
+                                    <table style="height: 100%; width: 100%;">
+                                        <tr>
+                                            <td style="height: 100%; width: 100%; border: 5px solid #89b6d6 !important;">
+                                                {% if largeDeskLeft.smallDesk_LeftPlace == parent %}
+                                                    <h5 style="color: red; text-align: center; ">{{ largeDeskLeft.smallDesk_LeftPlace.username }}</h5>
+                                                    <div class="metaInfo">
+                                                        <span><i class="fa fa-user"></i><a href="#">{{ largeDeskLeft.smallDesk_LeftPlace.active_is_structure }}</a> </span>
+                                                        <span><i class="fa fa-tag"></i><a href="/{{ largeDeskLeft.smallDesk_LeftPlace.pk }}/">{{ largeDeskLeft.smallDesk_LeftPlace.pk }}</a></span>
+                                                        <span><a href="/message/send/{{ largeDeskLeft.smallDesk_LeftPlace.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                    </div>
+
+                                                {% else %}
+                                                    {% if largeDeskLeft.smallDesk_LeftPlace != None %}
+                                                        <h5 style="background: #ccc; text-align: center; ">&nbsp;&nbsp;<a href="/marketing/anketa/{{ largeDeskLeft.smallDesk_LeftPlace.pk }}/">{{ largeDeskLeft.smallDesk_LeftPlace.username }}</a></h5>
+                                                        <div class="metaInfo">
+                                                            <span><i class="fa fa-user"></i><a href="#">{{ largeDeskLeft.smallDesk_LeftPlace.active_is_structure }}</a></span>
+                                                            <span><i class="fa fa-tag"></i><a href="/{{ largeDeskLeft.smallDesk_LeftPlace.pk }}/">{{ largeDeskLeft.smallDesk_LeftPlace.pk }}</a></span>
+                                                            <span><a href="/message/send/{{ largeDeskLeft.smallDesk_LeftPlace.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                        </div>
+                                                    {% else %}
+                                                        <h5 style="text-align: center; ">&nbsp;</h5>
+                                                        <div class="metaInfo">
+                                                            <span><i class="fa fa-user"></i>0</span>
+                                                            <span><i class="fa fa-tag"></i>0</span>
+                                                            <span><i class="fa fa-comments"></i>0</span>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td width="25%">
+                                    <table style="height: 100%; width: 100%;">
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td style="height: 100%; width: 100%; border: 5px solid #89b6d6 !important;">
+                                                {% if largeDeskLeft.smallDesk_RightPlace == parent %}
+                                                    <h5 style="color: red; text-align: center; ">&nbsp;{{ largeDeskLeft.smallDesk_RightPlace  }}</h5>
+                                                    <div class="metaInfo">
+                                                        <span><i class="fa fa-user"></i><a href="#">{{ largeDeskLeft.smallDesk_RightPlace.active_is_structure }}</a></span>
+                                                        <span><i class="fa fa-tag"></i><a href="/{{ largeDeskLeft.smallDesk_RightPlace.pk }}/">{{ largeDeskLeft.smallDesk_RightPlace.pk }}</a></span>
+                                                        <span><a href="/message/send/{{ largeDeskLeft.smallDesk_RightPlace.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                    </div>
+                                                {% else %}
+                                                    {% if largeDeskLeft.smallDesk_RightPlace != None %}
+                                                        <h5 style="text-align: center; "><a href="/marketing/anketa/{{ largeDeskLeft.smallDesk_RightPlace.pk }}/">{{ largeDeskLeft.smallDesk_RightPlace }}</a></h5>
+                                                        <div class="metaInfo">
+                                                            <span><i class="fa fa-user"></i><a href="#">{{ largeDeskLeft.smallDesk_RightPlace.active_is_structure }}</a></span>
+                                                            <span><i class="fa fa-tag"></i><a href="/{{ largeDeskLeft.smallDesk_RightPlace.pk }}/">{{ largeDeskLeft.smallDesk_RightPlace.pk }}</a></span>
+                                                            <span><a href="/message/send/{{ largeDeskLeft.smallDesk_RightPlace.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                        </div>
+                                                    {% else %}
+                                                        <h5 style="text-align: center; ">&nbsp;</h5>
+                                                        <div class="metaInfo">
+                                                            <span><i class="fa fa-user"></i>0</span>
+                                                            <span><i class="fa fa-tag"></i>0</span>
+                                                            <span><i class="fa fa-comments"></i>0</span>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td width="25%">
+                                    <table style="height: 100%; width: 100%;">
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td style="height: 100%; width: 100%; border: 5px solid #89b6d6 !important;">
+                                                {% if largeDeskRight.smallDesk_LeftPlace.username == parent %}
+                                                    <h5 style="color: red; text-align: center; ">&nbsp;{{ largeDeskRight.smallDesk_LeftPlace }}</h5>
+                                                    <div class="metaInfo">
+                                                        <span><i class="fa fa-user"></i><a href="#">{{ largeDeskRight.smallDesk_LeftPlace.active_is_structure }}</a></span>
+                                                        <span><i class="fa fa-tag"></i><a href="/{{ largeDeskRight.smallDesk_LeftPlace.pk }}/">{{ largeDeskRight.smallDesk_LeftPlace.pk }}</a></span>
+                                                        <span><a href="/message/send/{{ largeDeskRight.smallDesk_LeftPlace.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                    </div>
+                                                {% else %}
+                                                    {% if largeDeskRight.smallDesk_LeftPlace != None %}
+                                                        <h5 style="text-align: center; ">&nbsp;<a href="/marketing/anketa/{{ largeDeskRight.smallDesk_LeftPlace.pk }}/">{{ largeDeskRight.smallDesk_LeftPlace }}</a></h5>
+                                                        <div class="metaInfo">
+                                                            <span><i class="fa fa-user"></i><a href="#"> {{ largeDeskRight.smallDesk_LeftPlace.active_is_structure }}</a></span>
+                                                            <span><i class="fa fa-tag"></i><a href="/{{ largeDeskRight.smallDesk_LeftPlace.pk }}/">{{ largeDeskRight.smallDesk_LeftPlace.pk }}</a></span>
+                                                            <span><a href="/message/send/{{ largeDeskRight.smallDesk_LeftPlace.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                        </div>
+                                                    {% else %}
+                                                        <h5 style="text-align: center; ">&nbsp;</h5>
+                                                        <div class="metaInfo">
+                                                            <span><i class="fa fa-user"></i>0</span>
+                                                            <span><i class="fa fa-tag"></i>0</span>
+                                                            <span><i class="fa fa-comments"></i>0</span>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td width="25%" >
+                                    <table style="height: 100%; width: 100%;">
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td style="height: 100%; width: 100%; border: 5px solid #89b6d6 !important;">
+                                                {% if largeDeskRight.smallDesk_RightPlace == parent %}
+                                                    <h5 style="color: red; text-align: center; ">&nbsp;{{ largeDeskRight.smallDesk_RightPlace }}</h5>
+                                                    <div class="metaInfo">
+                                                        <span><i class="fa fa-user"></i><a href="#"> {{ largeDeskRight.smallDesk_RightPlace.active_is_structure }}</a></span>
+                                                        <span><i class="fa fa-tag"></i> <a href="/{{ largeDeskRight.smallDesk_RightPlace.pk }}/">{{ largeDeskRight.smallDesk_RightPlace.pk }}</a>, <a href="/{{ largeDeskRight.smallDesk_RightPlace.pk }}/">Ссылка</a> </span>
+                                                        <span><a href="/message/send/{{ largeDeskRight.smallDesk_RightPlace.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                    </div>
+                                                {% else %}
+                                                    {% if largeDeskRight.smallDesk_RightPlace != None %}
+                                                        <h5 style="text-align: center; ">&nbsp;<a href="/marketing/anketa/{{ largeDeskRight.smallDesk_RightPlace.pk }}/">{{ largeDeskRight.smallDesk_RightPlace }}</a></h5>
+                                                        <div class="metaInfo">
+                                                            <span><i class="fa fa-user"></i><a href="#"> {{ largeDeskRight.smallDesk_RightPlace.active_is_structure }}</a></span>
+                                                            <span><i class="fa fa-tag"></i> <a href="/{{ largeDeskRight.smallDesk_RightPlace.pk }}/">{{ largeDeskRight.smallDesk_RightPlace.pk }}</a>, <a href="/{{ largeDeskRight.smallDesk_RightPlace.pk }}/">Ссылка</a> </span>
+                                                            <span><a href="/message/send/{{ largeDeskRight.smallDesk_RightPlace.pk }}/"><i class="fa fa-comments"></i> 0</a></span>
+                                                        </div>
+                                                    {% else %}
+                                                        <h5 style="text-align: center; ">&nbsp;</h5>
+                                                        <div class="metaInfo">
+                                                            <span><i class="fa fa-user"></i>0</span>
+                                                            <span><i class="fa fa-tag"></i>0</span>
+                                                            <span><i class="fa fa-comments"></i>0</span>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <div class="row">
+                        {% if parent != user %}
+                            <div class="row">
+                                <!-- Выводим сообщение о рекомендателе -->
+                                <div class="col-lg-1 col-md-1 col-sm-1">
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5">
+                                    <h3> Стол: <b>{{ parent.username }}</b> </h3>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <a class="btn btn-primary btn-lg btn-block" href="/newMarketing/{% if id_user %}{{ id_user }}{% else %}{{ parent.pk }}{% endif %}/"> <i class="fa fa-user"></i> Встать в стол</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</section>
+{% endblock %}

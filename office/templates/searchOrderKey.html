@@ -1,0 +1,162 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block regiter %}
+	<!--start wrapper-->
+	<section class="wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <nav id="breadcrumbs">
+                        <ul>
+                            <li>Вы здесь:</li>
+                            <li><a href="/">Главная</a></li>
+                            <li><a href="/tovar/">Каталог</a></li>
+                            <li>Информация по заказу</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <div class="dividerHeading">
+                        <h4><span>Информация по заказу</span></h4>
+                    </div>
+                    <!-- Ид.Емайл  -->
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <label>Ид:</label>
+                                <input type="text" id="id_username" name="username" class="form-control" value="{{ orderProduct.user.pk }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <!-- Indicates a successful or positive action -->
+                                <label>Емайл:</label>
+                                <input type="text" id="id_firstname" name="firstname" class="form-control" value="{{ orderProduct.user.username }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Имя.Фамилия  -->
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <label>Имя:</label>
+                                <input type="text" id="id_firstname" name="username" class="form-control" value="{{ orderProduct.user.first_name }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <!-- Indicates a successful or positive action -->
+                                <label>Фамилия:</label>
+                                <input type="text" id="id_lastname" name="lastname" class="form-control" value="{{ orderProduct.user.last_name }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Уникальный ключ оплаты заказа  -->
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <label>Уникальный ключ оплаты заказа:</label>
+                                <input type="text" id="id_key" name="key" class="form-control" value="{{ orderProduct.activation_key }}" maxlength="40" data-msg-required="" placeholder="" required disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <hr>  -->
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Сумма заказа.Пакет для оплаты -->
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label>Сумма заказа:</label>
+                                <input type="text" id="id_sum" name="sum" class="form-control" value="{{ orderProduct.product.price }}" maxlength="40" data-msg-required="" placeholder="" required disabled>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label>Товар:</label>
+                                <input type="text" id="id_name" name="name" class="form-control" value="{{ orderProduct.product.model }}" maxlength="40" data-msg-required="" placeholder="" required disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <hr> -->
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Ваш баланс  -->
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <h2>Ваш баланс:</h2>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <h2>{{ wallet.UserWallet_walletPrice }}</h2>
+                            </div>
+                            {% if no_money %}
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h2 style="color: red; ">{{ no_money }}</h2>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- <hr> -->
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- form -->
+                    <form action="/office/wallet/payment/{{ orderProduct.activation_key }}/" method="post">
+                        {% csrf_token %}
+                        <!-- Уникальный ключ оплаты заказа  -->
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2"></div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <h2 style="color: red; ">{{ error_pin }}</h2>
+                            </div>
+                            <input type="hidden" id="id_key_product" name="key_product" class="form-control" value="{{ orderProduct.activation_key }}" maxlength="40" required  >
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-2 col-md-2"></div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <label>Pin</label>
+                                    <input type="password" id="id_pin" name="pin" class="form-control" maxlength="8" data-msg-required="Please enter the subject." placeholder="Pin">
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <!-- Indicates a successful or positive action -->
+                                    <label>&nbsp;</label>
+                                    <button class="btn btn-success btn-lg btn-block" type="submit"> <i class="fa fa-user"></i> Принять</button>
+                                </div>
+                                <div class="col-lg-2 col-md-2"></div>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4"></div>
+
+
+            </div>
+        </div>
+	</section>
+	<!--end wrapper-->
+
+{% endblock %}

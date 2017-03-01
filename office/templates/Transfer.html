@@ -1,0 +1,362 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block regiter %}
+	<!--start wrapper-->
+	<section class="wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <nav id="breadcrumbs">
+                        <ul>
+                            <li>Вы здесь:</li>
+                            <li><a href="/">Главная</a></li>
+                            <li>
+                                {% if id_payment == "1" %}
+                                    Оплата заказа
+                                {% elif id_payment == "transfer" %}
+                                    Перевод
+                                {% else %}
+                                    Финансы
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <div class="dividerHeading">
+                        <h4><span>{% if id_payment == "1" %}Оплата заказа{% elif id_payment == "transfer" %}Перевод{% else %}Финансы{% endif %}</span></h4>
+                    </div>
+
+                    <div class="alert alert-success hidden alert-dismissable" id="contactSuccess">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                      <strong>Success!</strong> Your message has been sent to us.
+                    </div>
+
+                    <div class="alert alert-error hidden" id="contactError">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                      <strong>Error!</strong> There was an error sending your message.
+                    </div>
+
+                    {% if not user.is_active %}
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <h1>Профиль не активен.</h1>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- errors -->
+                        {% if errors %}
+                            <h3 color="red">Допущены ошибки в заполнении формы:</h3>
+                            <h6 style="color: red; ">{{ errors }}</h6>
+                            <hr/>
+                        {% endif %}
+                        <!-- Определяем какая функция передает нам параметры -->
+                        <!-- Если not id_payKey то значит данных о искомом заказе не поступало  -->
+                        <!-- Если id_payment == "1" то мы хотим оплалить валютой заказ  -->
+                        {% if id_payKey == "False" and id_payment == "1" and not userOrder  %}
+                            <!-- Этот метод говорит о том, что бы появилась форма поиска заказа  -->
+                            <form action="/office/wallet/payment/" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                                            <label>Ключ оплаты:</label>
+                                            <input type="text" id="id_paymentKey" name="paymentKey" class="form-control" maxlength="50" data-msg-required="Пожалуйста введите ключ оплаты заказа." placeholder="Ключ оплаты заказа" required>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <!-- Indicates a successful or positive action -->
+                                            <label>&nbsp;</label>
+                                            <button class="btn btn-success btn-lg btn-block" type="submit"> <i class="fa fa-user"></i> Поиск</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        {% elif id_payKey == "True" and id_payment == "1" and userOrder %}
+                            <!-- Ид.Емайл  -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <label>Ид:</label>
+                                        <input type="text" id="id_username" name="username" class="form-control" value="{{ userOrder.SalesUser.pk }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                        <!-- Indicates a successful or positive action -->
+                                        <label>Емайл:</label>
+                                        <input type="text" id="id_firstname" name="firstname" class="form-control" value="{{ userOrder.SalesUser.username }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Имя.Фамилия  -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <label>Имя:</label>
+                                        <input type="text" id="id_firstname" name="username" class="form-control" value="{{ userOrder.SalesUser.first_name }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <!-- Indicates a successful or positive action -->
+                                        <label>Фамилия:</label>
+                                        <input type="text" id="id_lastname" name="lastname" class="form-control" value="{{ userOrder.SalesUser.last_name }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Уникальный ключ оплаты заказа  -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <label>Уникальный ключ оплаты заказа:</label>
+                                        <input type="text" id="id_key" name="key" class="form-control" value="{{ userOrder.SalesUniqueActivationKey }}" maxlength="40" data-msg-required="" placeholder="" required disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <hr>  -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Сумма заказа.Пакет для оплаты -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <label>Сумма заказа:</label>
+                                        <input type="text" id="id_sum" name="sum" class="form-control" value="{{ userOrder.SalesPackege.InfoProduct_price }}" maxlength="40" data-msg-required="" placeholder="" required disabled>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <label>Пакет для оплаты:</label>
+                                        <input type="text" id="id_name" name="name" class="form-control" value="{{ userOrder.SalesPackege.InfoProduct_name }}" maxlength="40" data-msg-required="" placeholder="" required disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <hr> -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Ваш баланс  -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <h2>Ваш баланс:</h2>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <h2>{{ balance }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <hr> -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- form -->
+                            <form action="{{ urls }}" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-lg-2 col-md-2"></div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <label>Pin</label>
+                                            <input type="password" id="id_pin" name="pin" class="form-control" maxlength="8" data-msg-required="Please enter the subject." placeholder="Pin">
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <!-- Indicates a successful or positive action -->
+                                            <label>&nbsp;</label>
+                                            <button class="btn btn-success btn-lg btn-block" type="submit"> <i class="fa fa-user"></i> Принять</button>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        {% else %}
+
+                        {% endif %}
+
+                        <!-- ######################### ПЕРЕВОД ВАЛЮТЫ ################################# -->
+                        <!-- Форма перевода валюты args['id_payment'] = "transfer" -->
+                        {% if id_payment == "transfer" and id_payKey == "False" %}
+                            <!-- Здесь мы выводим форму для поиска по логину пользователя или его ид -->
+                            <!-- form -->
+                            <form action="/office/wallet/transfer/" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                            <label>Ид пользователя:</label>
+                                            <input type="number" id="id_search_user_id" name="search_user_id" class="form-control" maxlength="50" data-msg-required="Пожалуйста введите ид пользователя." placeholder="Ид пользователя" required>
+                                        </div>
+
+                                        <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs">
+                                            <label>&nbsp;</label>
+                                        </div>
+
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                            <!-- Indicates a successful or positive action -->
+                                            <label>&nbsp;</label>
+                                            <button class="btn btn-success btn-lg btn-block" type="submit"> <i class="fa fa-user"></i> Поиск</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        {% elif  id_payment == "transfer" and id_payKey == "True" %}
+                            <!-- Выводим данные по искомому пользователю  -->
+                            <!-- Ид.Емайл  -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <label>Ид:</label>
+                                        <input type="text" id="id_username" name="username" class="form-control" value="{{ userWalletSearch.UserWallet_user.pk }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                        <!-- Indicates a successful or positive action -->
+                                        <label>Емайл:</label>
+                                        <input type="text" id="id_firstname" name="firstname" class="form-control" value="{{ userWalletSearch.UserWallet_user.username }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Имя.Фамилия  -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <label>Имя:</label>
+                                        <input type="text" id="id_firstname" name="username" class="form-control" value="{{ userWalletSearch.UserWallet_user.first_name }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <!-- Indicates a successful or positive action -->
+                                        <label>Фамилия:</label>
+                                        <input type="text" id="id_lastname" name="lastname" class="form-control" value="{{ userWalletSearch.UserWallet_user.last_name }}" maxlength="20" data-msg-required="" placeholder="" required disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <hr>  -->
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- form -->
+                            <form action="{{ urls }}" method="post">
+                                {% csrf_token %}
+
+                                <!-- Сумма перевода  -->
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <h2>Сумма перевода:</h2>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <input type="number" min="1" max="{{ balance }}" id="id_usernameTransferWallet" name="usernameTransferWallet" class="form-control" value="" maxlength="20" data-msg-required="" placeholder="" required >
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <hr> -->
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Ваш баланс  -->
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <h2>Ваш баланс:</h2>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <h2>{{ balance }}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <hr> -->
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-lg-2 col-md-2">
+                                            <h2>Pin:</h2>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                            <input type="password" id="id_pin" name="pin" class="form-control" maxlength="8" data-msg-required="Please enter the subject." placeholder="Pin">
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                            <!-- Indicates a successful or positive action -->
+                                            <button class="btn btn-success btn-lg btn-block" type="submit"> <i class="fa fa-user"></i> Принять</button>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="sidebar">
+                        <div class="widget_info">
+                            <div class="dividerHeading">
+                                <h4><span>Contact Info</span></h4>
+                                </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <ul class="widget_info_contact">
+                                <li><i class="fa fa-map-marker"></i> <p><strong>Address</strong>: #2021 Lorem Ipsum</p></li>
+                                <li><i class="fa fa-user"></i> <p><strong>Phone</strong>:(+91) 9000-12345</p></li>
+                                <li><i class="fa fa-envelope"></i> <p><strong>Email</strong>: <a href="#">mail@example.com</a></p></li>
+                                <li><i class="fa fa-globe"></i> <p><strong>Web</strong>: <a href="#" data-placement="bottom" data-toggle="tooltip" title="www.example.com">www.example.com</a></p></li>
+                            </ul>
+
+                        </div>
+
+                        <div class="widget_social">
+                            <div class="dividerHeading">
+                                <h4><span>Get Social</span></h4>
+                            </div>
+                            <ul class="widget_social">
+                                <li><a class="fb" href="#." data-placement="bottom" data-toggle="tooltip" title="Facbook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a class="twtr" href="#." data-placement="bottom" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                <li><a class="gmail" href="#." data-placement="bottom" data-toggle="tooltip" title="Google"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a class="dribbble" href="#." data-placement="bottom" data-toggle="tooltip" title="Dribbble"><i class="fa fa-dribbble"></i></a></li>
+                                <li><a class="skype" href="#." data-placement="bottom" data-toggle="tooltip" title="Skype"><i class="fa fa-skype"></i></a></li>
+                                <li><a class="pinterest" href="#." data-placement="bottom" data-toggle="tooltip" title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a class="instagram" href="#." data-placement="bottom" data-toggle="tooltip" title="Instagram"><i class="fa fa-instagram"></i></a></li>
+                                <li><a class="youtube" href="#." data-placement="bottom" data-toggle="tooltip" title="Youtube"><i class="fa fa-youtube"></i></a></li>
+                                <li><a class="linkedin" href="#." data-placement="bottom" data-toggle="tooltip" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a class="flickrs" href="#." data-placement="bottom" data-toggle="tooltip" title="Flickr"><i class="fa fa-flickr"></i></a></li>
+                                <li><a class="rss" href="#." data-placement="bottom" data-toggle="tooltip" title="RSS"><i class="fa fa-rss"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+	</section>
+	<!--end wrapper-->
+
+{% endblock %}

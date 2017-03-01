@@ -1,0 +1,112 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block regiter %}
+
+	<!--start wrapper-->
+	<section class="wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+
+                    <nav id="breadcrumbs">
+                        <ul>
+                            <li>Вы здесь:</li>
+                            <li><a href="/">Главная</a></li>
+                            <li>Авторизация</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+
+            <div class="row">
+					<div class="col-lg-8 col-md-8 col-sm-8">
+						<div class="dividerHeading">
+							<h4><span>Анкета для авторизации</span></h4>
+						</div>
+
+						<div class="alert alert-success hidden alert-dismissable" id="contactSuccess">
+						  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						  <strong>Success!</strong> Your message has been sent to us.
+						</div>
+
+						<div class="alert alert-error hidden" id="contactError">
+						  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						  <strong>Error!</strong> There was an error sending your message.
+						</div>
+                        {% if user.is_active %}
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <h1><h1>Профиль {{ user }} уже активен.</h1></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            {% if login_error %}
+                                <label class="error">{{ login_error }}</label>
+                            {% endif %}
+                            {% if activeEmail %}
+                                <h3 style="color: red; ">Ваш емайл {{ activeEmail }} активирован.</h3>
+                                <hr/>
+                            {% endif %}
+                                <form action="/auth/login/" method="post">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <input type="text" id="username" name="username" class="form-control" maxlength="100" data-msg-required="Please enter the subject." value="{% if activeEmail %}{{activeEmail}}{% endif %}" placeholder="Логин">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <input type="password" id="password" name="password" class="form-control" maxlength="100" data-msg-required="Please enter the subject." value="" placeholder="Пароль">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-xs-6">
+                                            <!-- Indicates a successful or positive action -->
+                                            <button class="btn btn-success btn-lg btn-block" type="submit"> <i class="fa fa-user"></i> Авторизация</button>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-xs-6">
+                                            <!-- Indicates a successful or positive action -->
+                                            <a class="btn btn-primary btn-lg btn-block" href="/auth/register/"> <i class="fa fa-check-circle"></i> Зарегестрирвать</a>
+                                        </div>
+                                    </div>
+
+                                </form>
+                        {% endif %}
+					</div>
+
+					<div class="col-lg-4 col-md-4 col-sm-4">
+					</div>
+
+				</div>
+        </div>
+	</section>
+	<!--end wrapper-->
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+{% endblock %}

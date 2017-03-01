@@ -1,0 +1,220 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block index %}
+	<!--start wrapper-->
+	<section class="wrapper">
+        <section class="wrapper right_sidebar">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6"><br>
+                        <article class="post">
+                            <figure class="post_img">
+                                <!-- Post Image Slider -->
+                                <div id="slider" class="swipe" style="visibility: visible;">
+                                    <ul class="swipe-wrap" style="width: 2250px;">
+                                        <li data-index="0" style="width: 750px; left: 0px; transition-duration: 0ms; transform: translate(-750px, 0px) translateZ(0px);"><img src="{% static "images/mobile-1.png" %}" alt="blog post"></li>
+                                        <li data-index="2" style="width: 750px; left: -1500px; transition-duration: 0ms; transform: translate(750px, 0px) translateZ(0px);"><img src="{% static "images/Tovar/mc32f604tctbw_353886240109.jpg" %}" alt="blog post"></li>
+                                        <li data-index="3" style="width: 750px; left: -1500px; transition-duration: 0ms; transform: translate(750px, 0px) translateZ(0px);"><img src="{% static "images/Tovar/samsung-z35.jpg" %}" alt="blog post"></li>
+                                        <li data-index="4" style="width: 750px; left: -1500px; transition-duration: 0ms; transform: translate(750px, 0px) translateZ(0px);"><img src="{% static "images/Tovar/vePhJkkgAz043Qz1YSg6gBCfP3n1xt.png" %}" alt="blog post"></li>
+                                    </ul>
+                                    <div class="swipe-navi">
+                                      <div class="swipe-left" onclick="mySwipe.prev()"><i class="fa fa-chevron-left"></i></div>
+                                      <div class="swipe-right" onclick="mySwipe.next()"><i class="fa fa-chevron-right"></i></div>
+                                    </div>
+                                </div>
+                            </figure>
+                        </article>
+					</div>
+
+                    <section class="feature-block">
+                        <!--Sidebar Widget-->
+                        <div class="col-lg-6 col-sm-12 col-md-6 col-xs-12">
+                            <div class="sidebar">
+                                <div class="widget widget_search">
+                                    <div class="site-search-area">
+                                        <form method="get" id="site-searchform" action="/tovar/search/">
+                                            <div>
+                                                <input class="input-text" name="q" id="s" placeholder="Enter Search keywords..." type="text">
+                                                <input id="searchsubmit" value="Search" type="submit">
+                                            </div>
+                                        </form>
+                                    </div><!-- end site search -->
+                                </div>
+
+                                <h4>Обнови Свой Мир</h4>
+                                <h4 style="font: 300 22px/23px 'open sans', Helvetica,Arial,sans-serif; ">
+                                    Участвуй в маркетинговой программе и забирай любую продукцию в 2 или в 3 раза дешевле.
+                                </h4>
+                                <h4>Будь всегда в тренде.</h4>
+                                <h4 style="font: 300 22px/23px 'open sans', Helvetica,Arial,sans-serif; ">
+                                    При желании зарабатывай и получай удовольствия от сотрудничества с интернет магазином SETBIZ.ru
+                                </h4>
+                                <p>Включайся в наше социальное движение "Обнови Свой Мир" и обнови весь свой мир!</p>
+
+                                <hr>
+                                    <i class="fa fa-apple"></i>
+                                    <i class="fa fa-windows"></i>
+                                    <i class="fa fa-clock-o"></i>
+                                    <i class="fa fa-android"></i>
+                                    <i class="fa fa-paperclip"></i>
+                                    <i class="fa fa-skype"></i>
+                                <hr>
+                                <a href="/tovar/" class="btn btn-default btn-lg">Каталог</a>
+                                <a href="/newMarketing/" class="btn btn-default btn-lg">Маркетинговая программа</a>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+			</div> <!--/.container-->
+		</section>
+
+        <section class="">
+            <div class="container">
+                <div class="row sub_content">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                        <!-- Наш класс по выводу продукта взят с шаблона http://bootstrap-3.ru/examples/offcanvas/ -->
+                        {% for product in products %}
+                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" style="margin: 10px 0 0 0;">
+                                <!-- Этим дивом выравниваем высоту -->
+                                <div style="height: auto; border: 1px solid #ddd;">
+                                    <a href="/tovar/destination/{{ product.destination_id }}/company/{{ product.company_id }}/type/{{ product.type_id }}/model/{{ product.model_id }}/" >
+                                        <div style="height: 200px; border-bottom: 1px solid #ddd; ">
+                                            <img class="img-responsive chain" style="height: 200px; margin: 0 auto; padding: 3em 0;"
+                                                 src="/{{ product.avatar|default:"/static/zoom.png" }}" alt="{{ product.name }}">
+                                        </div>
+                                    </a>
+
+                                        <div style="height: auto; padding: 1.5em 1em 0 1.5em; ">
+                                            <a href="/tovar/destination/{{ product.destination_id }}/company/{{ product.company_id }}/type/{{ product.type_id }}/model/{{ product.model_id }}/" >
+
+                                                <h4 style="text-align: center; font-size: 12px;">{{ product.model|default:"Описание отсутствует" }}</h4>
+                                            </a>
+                                            <!-- |truncatewords:20 ограничивает количество слов выводимое при описании -->
+                                            <!-- Так как у нас все вмещается делаем максимум и оставляем на всякий случай -->
+                                            <hr>
+
+                                            <div class="pricingTable-header">
+                                                <span class="price-value" style="text-align: center; "><span>{{ product.price|truncatewords:20|default:"Цена отсутствует" }}</span><span class="mo"> руб.</span></span>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                        <!-- Наш класс по выводу продукта взят с шаблона http://bootstrap-3.ru/examples/offcanvas/ -->
+                        {% for product in samsung %}
+                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" style="margin: 10px 0 0 0;">
+                                <!-- Этим дивом выравниваем высоту -->
+                                <div style="height: auto; border: 1px solid #ddd;">
+                                    <a href="/tovar/destination/{{ product.destination_id }}/company/{{ product.company_id }}/type/{{ product.type_id }}/model/{{ product.model_id }}/" >
+                                        <div style="height: 200px; border-bottom: 1px solid #ddd; ">
+                                            <img class="img-responsive chain" style="height: 200px; margin: 0 auto; padding: 3em 0;"
+                                                 src="/{{ product.avatar|default:"/static/zoom.png" }}" alt="{{ product.name }}">
+                                        </div>
+                                    </a>
+
+                                        <div style="height: auto; padding: 1.5em 1em 0 1.5em; ">
+                                            <a href="/tovar/destination/{{ product.destination_id }}/company/{{ product.company_id }}/type/{{ product.type_id }}/model/{{ product.model_id }}/" >
+
+                                                <h4 style="text-align: center; font-size: 12px;">{{ product.model|default:"Описание отсутствует" }}</h4>
+                                            </a>
+                                            <!-- |truncatewords:20 ограничивает количество слов выводимое при описании -->
+                                            <!-- Так как у нас все вмещается делаем максимум и оставляем на всякий случай -->
+                                            <hr>
+
+                                            <div class="pricingTable-header">
+                                                <span class="price-value" style="text-align: center; "><span>{{ product.price|truncatewords:20|default:"Цена отсутствует" }}</span><span class="mo"> руб.</span></span>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="row">
+                        <!-- Наш класс по выводу продукта взят с шаблона http://bootstrap-3.ru/examples/offcanvas/ -->
+                        {% for product in virt %}
+                            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" style="margin: 10px 0 0 0;">
+                                <!-- Этим дивом выравниваем высоту -->
+                                <div style="height: auto; border: 1px solid #ddd;">
+                                    <a href="/tovar/destination/{{ product.destination_id }}/company/{{ product.company_id }}/type/{{ product.type_id }}/model/{{ product.model_id }}/" >
+                                        <div style="height: 200px; border-bottom: 1px solid #ddd; ">
+                                            <img class="img-responsive chain" style="height: 200px; margin: 0 auto; padding: 3em 0;"
+                                                 src="/{{ product.avatar|default:"/static/zoom.png" }}" alt="{{ product.name }}">
+                                        </div>
+                                    </a>
+
+                                        <div style="height: auto; padding: 1.5em 1em 0 1.5em; ">
+                                            <a href="/tovar/destination/{{ product.destination_id }}/company/{{ product.company_id }}/type/{{ product.type_id }}/model/{{ product.model_id }}/" >
+
+                                                <h4 style="text-align: center; font-size: 12px;">{{ product.model|default:"Описание отсутствует" }}</h4>
+                                            </a>
+                                            <!-- |truncatewords:20 ограничивает количество слов выводимое при описании -->
+                                            <!-- Так как у нас все вмещается делаем максимум и оставляем на всякий случай -->
+                                            <hr>
+
+                                            <div class="pricingTable-header">
+                                                <span class="price-value" style="text-align: center; "><span>{{ product.price|truncatewords:20|default:"Цена отсутствует" }}</span><span class="mo"> руб.</span></span>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--Клиенты-->
+		<section class="clients">
+			<div class="container">
+				<div class="row sub_content">
+					<div class="col-lg-12 col-md-12 col-sm-12">
+						<div class="dividerHeading">
+							<h4><span>С нами сотрудничают</span></h4>
+						</div>
+
+						<div class="our_clients">
+							<ul class="client_items clearfix">
+								<li class="col-sm-3 col-md-3 col-lg-3">
+                                    <a href="/tovar/destination/2/company/25/"  data-placement="bottom" data-toggle="tooltip" title="Интернет магазин по продаже техники Samsung" >
+                                        <img width="200px" src="{% static "images/ico/2000px-Samsung_Logo.svg.png" %}" alt="Интернет магазин по продаже техники Samsung" />
+                                    </a>
+                                </li>
+								<li class="col-sm-3 col-md-3 col-lg-3">
+                                    <a href="/tovar/destination/2/company/4/"  data-placement="bottom" data-toggle="tooltip" title="Интернет магазин по продаже техники Apple" >
+                                        <img height="80px" src="{% static "images/ico/APPLE_icon-icons.com_65545.png" %}" alt="Интернет магазин по продаже техники Apple" />
+                                    </a>
+                                </li>
+								<li class="col-sm-3 col-md-3 col-lg-3">
+                                    <a href="/tovar/destination/33/company/37/"  data-placement="bottom" data-toggle="tooltip" title="Интернет магазин по продаже техники игровых консолей" >
+                                        <img height="100px" src="{% static "images/ico/ps_playstation_logo.png" %}" alt="Интернет магазин по продаже техники игровых консолей" />
+                                    </a>
+                                </li>
+								<li class="col-sm-3 col-md-3 col-lg-3">
+                                    <a href="/tovar/destination/33/"  data-placement="bottom" data-toggle="tooltip" title="Интернет магазин по продаже техники шлемов виртуальной реальности" >
+                                        <img width="200px" src="{% static "images/ico/htc-logo-2.jpg" %}" alt="Интернет магазин по продаже техники шлемов виртуальной реальности" />
+                                    </a>
+                                </li>
+							</ul><!--/ .client_items-->
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</section>
+	<!--end wrapper-->
+
+
+{% endblock %}

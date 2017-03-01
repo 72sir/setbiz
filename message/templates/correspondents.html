@@ -1,0 +1,144 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block index %}
+    <!--start wrapper-->
+    <section class="wrapper">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+
+                    <nav id="breadcrumbs">
+                        <ul>
+                            <li>Вы здесь:</li>
+                            <li><a href="/">Главная</a></li>
+                            <li><a href="/office/">Кабинет</a></li>
+                            <li><a href="/message/">Сообщения</a></li>
+                            <li>Беседа</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+
+                        <div class="dividerHeading">
+                            <h4><span>Сообщения</span></h4>
+                        </div>
+
+                    <div class="blog_single">
+                        <div class="about_author">
+                            <div class="author_desc">
+                                <img src=" {% if sendUser.avatar %}/{{ sendUser.avatar }} {% else %} {% static "images/blog/author.png"%} {% endif %}  " alt="about author">
+                                <ul class="author_social">
+                                    <li><a class="fb" href="#." data-placement="top" data-toggle="tooltip" title="" data-original-title="Facbook"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a class="twtr" href="#." data-placement="top" data-toggle="tooltip" title="" data-original-title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a class="skype" href="#." data-placement="top" data-toggle="tooltip" title="" data-original-title="Skype"><i class="fa fa-skype"></i></a></li>
+                                </ul>
+                            </div>
+
+                            <div class="author_bio">
+                                <h3 class="author_name"><a href="#"> {% if sendUser.first_name.title %}{{ sendUser.first_name.title }} {{ sendUser.last_name }}&nbsp; {% else %} {{ sendUser.username.title }}&nbsp;  {% endif %} </a></h3>
+                                <h5>Aнкета: <a href="/marketing/anketa/{{ sendUser.pk }}/">{{ sendUser.username }}</a></h5>
+                                <h3>Тема общения: </h3>
+                                <br>
+                                <p class="author_det">
+                                    {{ massege_user.team }}&nbsp;
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--News Comments-->
+                    <div class="news_comments">
+                        <div class="dividerHeading">
+                            <h4><span>Переписка</span></h4>
+                        </div>
+
+                        {% if massege %}
+                            {% for mas in massege %}
+                                <div id="comment">
+                                    <ul id="comment-list">
+                                        <li class="comment">
+                                            <div class="avatar"><img alt="" src="{% if mas.user_send.avatar %}/{{ mas.user_send.avatar }} {% else %}{% static "images/blog/avatar_1.png"%}{% endif %}" class="avatar"></div>
+                                            <div class="comment-container">
+                                                <h4 class="comment-author"><a href="#">{{ mas.user_send.email }}:&nbsp;{{ mas.user_send.first_name }}&nbsp;{{ mas.user_send.last_name }}</a></h4>
+                                                <div class="comment-meta"><a href="#" class="comment-date link-style1">{{ mas.date }}</a><a class="comment-reply-link link-style3" href="#respond">Reply »</a></div>
+                                                <div class="comment-body">
+                                                    <h4 style="color: black; ">{{ mas.massage }}</h4>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% endfor %}
+
+                            <!-- /#comments -->
+                            <div class="dividerHeading">
+                                <h4><span>Написать сообщение</span></h4>
+                            </div>
+                            <form action="/message/send/{{ sendUser.pk }}/" method="post">
+                                {% csrf_token %}
+
+                                <div class="comment-box row">
+                                    <div class="col-sm-12">
+                                        <p>
+                                            <textarea name="comments" class="form-control" rows="6" cols="40" id="comments" onfocus="if(this.value == 'Message') { this.value = ''; }" onblur="if(this.value == '') { this.value = 'Message'; }" placeholder="Message">Message</textarea>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-lg btn-default" href=""><i class="fa fa-user"></i> Послать сообщение</button>
+                            </form>
+
+                        {% else %}
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <h1> Переписка с данным пользователем отсутствует.</h1>
+                            <form action="/message/send/{{ sendUser.pk }}/" method="post">
+                                {% csrf_token %}
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <input type="text" id="id_team" name="team" class="form-control" maxlength="250" data-msg-required="" value="" placeholder="Тема переписки"  required>
+                                    </div>
+                                </div>
+
+                                <div class="comment-box row">
+                                    <div class="col-sm-12">
+                                        <p>
+                                            <textarea name="comments" class="form-control" rows="6" cols="40" id="comments" onfocus="if(this.value == 'Message') { this.value = ''; }" onblur="if(this.value == '') { this.value = 'Message'; }" placeholder="Message">Message</textarea>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-lg btn-default" href=""><i class="fa fa-user"></i> Послать сообщение</button>
+                            </form>
+
+
+
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+    <br/>
+    <br/>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block regiter %}
+<!--start wrapper-->
+	<section class="wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+
+                    <nav id="breadcrumbs">
+                        <ul>
+                            <li>Вы здесь:</li>
+                            <li><a href="/">Главная</a></li>
+                            <li>Регистрация</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <div class="dividerHeading">
+                        <h4><span>РЕГИСТРАЦИЯ</span></h4>
+                    </div>
+
+                    {% if user.is_active %}
+                        <h1>Профиль {{ user }} уже активен.</h1>
+                    {% else %}
+                        <!-- form.errors -->
+                        {% if form.errors %}
+                            <h3 color="red">Допущены ошибки в заполнении формы:</h3>
+                            <h6 style="color: red; ">{{ form.errors }}</h6>
+                            <hr/>
+                        {% endif %}
+                        <!-- errors -->
+                        {% if errors %}
+                            <h3 color="red">Допущены ошибки в заполнении формы:</h3>
+                            <h6 style="color: red; ">{{ errors }}</h6>
+                            <hr/>
+                        {% endif %}
+                        <!-- activeEmail -->
+                        {% if activeEmail %}
+                            <h3 style="color: red; ">Вам на {{ activeEmail }} была отправлена ссылка для активации аккаунта. Перейдите по ней для входа в личный кабинет.</h3>
+                        {% else %}
+                            <form action="/auth/register/" method="post">
+                                {% csrf_token %}
+                                <!-- form.parentname.errors -->
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <label>Номер рекомендателя:</label>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <input type="number" id="id_parent" name="id_parent" class="form-control" maxlength="100" data-msg-required="" value="esdfd((esdf)(((((esdf)(esdf" placeholder="" required >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <hr/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <h6>Email:</h6>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <h6>{{ form.email.errors }}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-12 ">
+                                            <input type="email" id="id_email" name="email" class="form-control" maxlength="100" data-msg-email="Please enter a valid email address." data-msg-required="Please enter your email address." value="{{ email }}" placeholder="Электронный адрес"  required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <h6>Имя:</h6>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <h6>{{ form.first_name.errors }}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input type="text" id="id_first_name" name="first_name" class="form-control" maxlength="100" data-msg-required="Please enter the subject." value="{{ first_name }}" placeholder="Имя"  required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <h6>Фамилия:</h6>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <h6>{{ form.last_name.errors }}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input type="text" id="id_last_name" name="last_name" class="form-control" maxlength="100" data-msg-required="Please enter the subject." value="{{ last_name }}" placeholder="Фамилия"  required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <h6>Пароль:</h6>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <h6>{{ form.password1.errors }}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input type="password" id="id_password1" name="password1" class="form-control" maxlength="100" data-msg-required="Please enter the subject." value="" placeholder="Пароль" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <h6>Повторите пароль:</h6>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <h6>{{ form.password2.errors }}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input type="password" id="id_password2" name="password2" class="form-control" maxlength="100" data-msg-required="Please enter the subject." value="" placeholder="Повторите пароль"  required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <h1>
+                                                <input id="dogovor" name="dogovor" type="checkbox" style="height: 20px;width: 20px;">
+                                                Я ознакомлен и принимаю условия <a href="/contract/">договора</a>.
+                                            </h1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-xs-12 ">
+                                        <!-- Indicates a successful or positive action -->
+                                        <button class="btn btn-success btn-lg btn-block" type="submit"> <i class="fa fa-check-circle"></i> Зарегестрирвать</button>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-xs-12">
+                                        <!-- Indicates a successful or positive action -->
+                                        <a class="btn btn-primary btn-lg btn-block" href="/auth/login/"> <i class="fa fa-user"></i> Авторизация</a>
+                                    </div>
+                                </div>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                <!-- Доп меню по доп инфе -->
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                </div>
+            </div>
+        </div>
+    </section>
+<!--end wrapper-->
+    <br/>
+    <br/>
+{% endblock %}

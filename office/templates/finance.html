@@ -1,0 +1,221 @@
+{% extends 'main.html' %}
+{% load cache %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block finance %}
+	<!--start wrapper-->
+	<section class="wrapper">
+        <div class="container">
+            <!-- Заставка - личный кабинет -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <nav id="breadcrumbs">
+                        <ul>
+                            <li>Вы здесь:</li>
+                            <li><a href="/">Главная</a></li>
+                            <li><a href="/office/">Кабинет</a></li>
+                            <li>Финансы</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Контекст страницы -->
+        <section class="about">
+            <div class="container">
+                <!-- Ошибки -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        {% if errors %}
+                            <h2>Ошибки профиля:</h2>
+                            <h2 style="color: red;">{{ errors }}</h2>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Баланс -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="dividerHeading">
+                            <h4><span>Баланс</span></h4>
+                        </div>
+                    </div>
+                    <!-- Таблица -->
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;Номер счета(№)</th>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;Валюта</th>
+                                    <th>&nbsp;Бонусы</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;{{ user.pk }}</td>
+                                    <td>&nbsp;<b>Баланс:</b></td>
+                                    <td>&nbsp;</td>
+                                    <td><b>&nbsp;{{ balance }}</b></td>
+                                    <td>&nbsp;{{ bonuce }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <!-- Standard button -->
+                        <a href="/office/wallet/payment/4/" class="btn btn-info btn-lg btn-block" type="button"> <i class="fa fa-credit-card"></i> Пополнить счет</a>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <!-- Standard button -->
+                        <a href="/office/wallet/transfer/" class="btn btn-default btn-lg btn-block" type="button"> <i class="fa fa-money"></i> Перевести валюту</a>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <!-- Standard button -->
+                        <a href="/office/wallet/payment/" class="btn btn-default btn-lg btn-block" type="button"> <i class="fa fa-money"></i> Оплатить валютой</a>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <!-- Indicates a successful or positive action -->
+                        <a href="/office/wallet/payment/2/" class="btn btn-success btn-lg btn-block" type="button"> <i class="fa fa-rub"></i> Вывести на карту</a>
+                    </div>
+                </div>
+                <!-- Таблица действующих пакетов -->
+                <!-- Проверяем переменную active_packages переданную из office/views.py если в ней имеются данные то выводим-->
+                {% if active_packages %}
+                    <!-- Действующие пакеты пользователя -->
+                    <div class="row ">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="dividerHeading">
+                                <h4><span>Действующие пакеты</span></h4>
+                            </div>
+                        </div>
+                        <!-- Таблица действующих пакетов -->
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Пакет</th>
+                                        <th>Цена(руб)</th>
+                                        <th>Дата создания</th>
+                                        <th>Действителен до</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for USOIP in active_packages %}
+                                        <tr>
+                                            <td>{{ USOIP.pk }}</td>
+                                            <td>{{ USOIP.ChargedOrdrs_Packege.InfoProduct_name }}</td>
+                                            <td>{{ USOIP.ChargedOrdrs_Packege.InfoProduct_price }}</td>
+                                            <td>{{ USOIP.ChargedOrdrs_DatePayPackage }}</td>
+                                            <td>{{ USOIP.ChargedOrdrs_EndPackage }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                {% else %}
+                    <br/>
+                    <br/>
+                    <br/>
+                {% endif  %}
+
+                <!-- Таблица на оплату заказов -->
+                <!-- Проверяем переменную UserSalesOrderInfPackage переданную из office/views.py если в ней имеются данные то выводим-->
+                {% if UserSalesOrderInfPackage %}
+                    <div class="row ">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="dividerHeading">
+                                <h4><span>Пакеты на оплату</span></h4>
+                            </div>
+                        </div>
+                        <!-- Таблица на оплату заказов -->
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <!-- верх -->
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Пакет</th>
+                                        <th>Цена(руб)</th>
+                                        <th>Ключ оплаты</th>
+                                        <th>Дата создания</th>
+                                        <th>Оплата до</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for USOIP in UserSalesOrderInfPackage %}
+                                        <tr>
+                                            <td>{{ USOIP.pk }}</td>
+                                            <td>{{ USOIP.SalesPackege.InfoProduct_name }}</td>
+                                            <td>{{ USOIP.SalesPackege.InfoProduct_price }}</td>
+                                            <td>{{ USOIP.SalesUniqueActivationKey }}</td>
+                                            <td>{{ USOIP.SalesDateCreatedOrder }}</td>
+                                            <td>{{ USOIP.SalesDateKeyExpires }}</td>
+                                            <td><a href="/office/wallet/payment/{{ USOIP.SalesUniqueActivationKey }}/">Оплатить</a> / <a href="/office/wallet/delete/{{ USOIP.SalesUniqueActivationKey }}/">Удалить</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                {% else %}
+                    <br/>
+                    <br/>
+                    <br/>
+                {% endif  %}
+
+                <!-- Виджет по выплатам пакетов -->
+                <!-- Проверяем переменную active_packages переданную из office/views.py если в ней имеются данные то выводим-->
+                {% if active_packages %}
+                    <!-- В видежет показываем выплаты по пакетам -->
+                    <div class="row ">
+                        <div class="who">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="dividerHeading">
+                                    <h4><span>Выплаты по пакетам</span></h4>
+                                </div>
+                                <p></p>
+                                <ul class="progress-skill-bar">
+                                    {% for USOIP in active_packages %}
+                                        <li>
+                                            <span class="lable">10%</span>
+                                            <div class="progress_skill">
+                                                <div class="bar" data-value="15" role="progressbar" data-height="100">
+                                                    {{ USOIP.ChargedOrdrs_Packege.InfoProduct_name }}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul><br/><br/>
+                                <div class="col-lg-3 col-md-3 col-xs-3"></div>
+                                <div class="col-lg-6 col-md-6 col-xs-6">
+                                    <!-- Indicates a successful or positive action -->
+                                    <a href="/product/info/" class="btn btn-success btn-lg btn-block" type="button"> <i class="fa fa-check-circle"></i> Купить пакет </a>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-xs-3"></div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                    <br/>
+                    <br/>
+                    <br/>
+                {% endif  %}
+            </div>
+        </section>
+	</section>
+	<!--end wrapper-->
+    <br/>
+    <br/>
+{% endblock %}

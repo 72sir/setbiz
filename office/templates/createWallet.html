@@ -1,0 +1,137 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block regiter %}
+
+	<!--start wrapper-->
+	<section class="wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <nav id="breadcrumbs">
+                        <ul>
+                            <li>Вы здесь:</li>
+                            <li><a href="/">Главная</a></li>
+                            <li>Регистрация финансов</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="row ">
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <div class="dividerHeading">
+                        <h4><span>Создать кошелек</span></h4>
+                    </div>
+
+                    <div class="alert alert-success hidden alert-dismissable" id="contactSuccess">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                      <strong>Success!</strong> Your message has been sent to us.
+                    </div>
+
+                    <div class="alert alert-error hidden" id="contactError">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                      <strong>Error!</strong> There was an error sending your message.
+                    </div>
+                    {% if not user.is_active %}
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <h1><h1>Профиль не активен.</h1></h1>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        {% if errors %}
+                            <label class="error">{{ errors }}</label>
+                        {% endif %}
+                            <form action="/office/wallet/" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <h6>Пин код кошелька:</h6>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-6">
+                                            <input type="password" id="password" name="password1" class="form-control" maxlength="8" data-msg-required="" value="" placeholder="Пароль">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-3">
+                                            <h6>Повторите пин код:</h6>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-6">
+                                            <input type="password" id="password" name="password2" class="form-control" maxlength="8" data-msg-required="" value="" placeholder="Пароль">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-xs-3">
+                                        <!-- Indicates a successful or positive action -->
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-xs-6">
+                                        <!-- Indicates a successful or positive action -->
+                                        <button class="btn btn-success btn-lg btn-block" type="submit"> <i class="fa fa-user"></i> Создать кошелек</button>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-xs-3">
+                                        <!-- Indicates a successful or positive action -->
+                                    </div>
+                                </div>
+
+                            </form>
+                    {% endif %}
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="sidebar">
+                        <div class="widget_info">
+                            <div class="dividerHeading">
+                                <h4><span>Contact Info</span></h4>
+                                </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <ul class="widget_info_contact">
+                                <li><i class="fa fa-map-marker"></i> <p><strong>Address</strong>: #2021 Lorem Ipsum</p></li>
+                                <li><i class="fa fa-user"></i> <p><strong>Phone</strong>:(+91) 9000-12345</p></li>
+                                <li><i class="fa fa-envelope"></i> <p><strong>Email</strong>: <a href="#">mail@example.com</a></p></li>
+                                <li><i class="fa fa-globe"></i> <p><strong>Web</strong>: <a href="#" data-placement="bottom" data-toggle="tooltip" title="www.example.com">www.example.com</a></p></li>
+                            </ul>
+
+                        </div>
+
+                        <div class="widget_social">
+                            <div class="dividerHeading">
+                                <h4><span>Get Social</span></h4>
+                            </div>
+                            <ul class="widget_social">
+                                <li><a class="fb" href="#." data-placement="bottom" data-toggle="tooltip" title="Facbook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a class="twtr" href="#." data-placement="bottom" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                <li><a class="gmail" href="#." data-placement="bottom" data-toggle="tooltip" title="Google"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a class="dribbble" href="#." data-placement="bottom" data-toggle="tooltip" title="Dribbble"><i class="fa fa-dribbble"></i></a></li>
+                                <li><a class="skype" href="#." data-placement="bottom" data-toggle="tooltip" title="Skype"><i class="fa fa-skype"></i></a></li>
+                                <li><a class="pinterest" href="#." data-placement="bottom" data-toggle="tooltip" title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a class="instagram" href="#." data-placement="bottom" data-toggle="tooltip" title="Instagram"><i class="fa fa-instagram"></i></a></li>
+                                <li><a class="youtube" href="#." data-placement="bottom" data-toggle="tooltip" title="Youtube"><i class="fa fa-youtube"></i></a></li>
+                                <li><a class="linkedin" href="#." data-placement="bottom" data-toggle="tooltip" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a class="flickrs" href="#." data-placement="bottom" data-toggle="tooltip" title="Flickr"><i class="fa fa-flickr"></i></a></li>
+                                <li><a class="rss" href="#." data-placement="bottom" data-toggle="tooltip" title="RSS"><i class="fa fa-rss"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+	</section>
+	<!--end wrapper-->
+
+{% endblock %}

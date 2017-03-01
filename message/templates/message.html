@@ -1,0 +1,125 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block index %}
+    <!--start wrapper-->
+    <section class="wrapper">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+
+                    <nav id="breadcrumbs">
+                        <ul>
+                            <li>Вы здесь:</li>
+                            <li><a href="/">Главная</a></li>
+                            <li><a href="/office/">Кабинет</a></li>
+                            <li>Сообщения</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="dividerHeading">
+                        <h4><span>Сообщения</span></h4>
+                    </div>
+                </div>
+            </div>
+
+            {% if massege_user or massege_user2 %}
+                {% for massege in massege_user %}
+
+
+                    <div class="row sub_content">
+                        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                            <div class="blog_single">
+                                <div class="about_author">
+                                    <div class="author_desc">
+                                        <img src="{% if massege.user_two.avatar %}/{{ massege.user_two.avatar }} {% else %} {% static "images/blog/author.png"%} {% endif %} " alt="about author">
+                                        <ul class="author_social">
+                                            <li><a class="fb" href="#." data-placement="top" data-toggle="tooltip" title="" data-original-title="Facbook"><i class="fa fa-facebook"></i></a></li>
+                                            <li><a class="twtr" href="#." data-placement="top" data-toggle="tooltip" title="" data-original-title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                            <li><a class="skype" href="#." data-placement="top" data-toggle="tooltip" title="" data-original-title="Skype"><i class="fa fa-skype"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="author_bio">
+                                        <h3 class="author_name"><a href="/message/send/{{ massege.user_two.pk }}/">{{ massege.user_two.email }}:&nbsp; {{ massege.user_two.first_name }} {{ massege.user_two.last_name}}</a></h3>
+                                        <h5>Aнкета: <a href="/marketing/anketa/{{ massege.user_two.pk }}/">{{ massege.user_two.username.title }}</a></h5>
+                                        <h3>Тема общения: </h3>
+                                        <br>
+                                        <p class="author_det">
+                                            {{ massege.team }}&nbsp;
+                                        </p>
+                                    </div>
+                                </div>
+                                <br>
+                                <p style="text-align: right;">
+                                    <a href="/message/send/{{ massege.user_two.pk }}/" class="btn btn-small btn-default" type="button">Перейти к переписке</a>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+                {% for massege in massege_user2 %}
+
+                    <div class="row sub_content">
+                        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                            <div class="blog_single">
+                                <div class="about_author">
+
+                                    <div class="author_desc">
+                                        <img src="{% if massege.user_one.avatar %}/{{ massege.user_one.avatar }} {% else %} {% static "images/blog/author.png"%} {% endif %} " alt="about author">
+                                        <ul class="author_social">
+                                            <li><a class="fb" href="#." data-placement="top" data-toggle="tooltip" title="" data-original-title="Facbook"><i class="fa fa-facebook"></i></a></li>
+                                            <li><a class="twtr" href="#." data-placement="top" data-toggle="tooltip" title="" data-original-title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                            <li><a class="skype" href="#." data-placement="top" data-toggle="tooltip" title="" data-original-title="Skype"><i class="fa fa-skype"></i></a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="author_bio">
+                                        <h3 class="author_name"><a href="/message/send/{{ massege.user_one.pk }}/">{{ massege.user_one.email }}:&nbsp; {{ massege.user_one.first_name }} {{ massege.user_one.last_name}}</a></h3>
+                                        <h5>Aнкета: <a href="/marketing/anketa/{{ massege.user_one.pk }}/">{{ massege.user_one.username.title }}</a></h5>
+                                        <h3>Тема общения: </h3>
+                                        <p class="author_det">
+                                            {{ massege.team }}&nbsp;
+                                        </p>
+                                    </div>
+
+                                </div>
+                                <br>
+                                <p style="text-align: right;">
+                                    <a href="/message/send/{{ massege.user_one.pk }}/" class="btn btn-small btn-default" type="button">Перейти к переписке</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            {% else %}
+            <div class="row sub_content">
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                    <h1>У пользователя нет сообщений.</h1>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+
+            {% endif %}
+        </div>
+    </section>
+    <br/>
+    <br/>
+{% endblock %}

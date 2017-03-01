@@ -1,0 +1,222 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+{% block index %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <nav id="breadcrumbs">
+                    <ul>
+                        <li>Вы здесь:</li>
+                        <li><a href="/">Главная</a></li>
+                        {% if infotovars %}
+                            <li>Каталог</li>
+                        {% elif infotovarscompany %}
+                            <li><a href="/tovar/">Каталог</a></li>
+
+                            <li>{{ destination }}</li>
+                        {% elif infotovarstype %}
+                            <li><a href="/tovar/">Каталог</a></li>
+                            <li><a href="/tovar/destination/{{ id_destination }}/">{{ destination }}</a></li>
+
+                            <li>{{ company }}</li>
+                        {% elif infotovarsmodel %}
+                            <li><a href="/tovar/">Каталог</a></li>
+                            <li><a href="/tovar/destination/{{ id_destination }}/">{{ destination }}</a></li>
+
+                            <li>
+                                <a href="/tovar/destination/{{ id_destination }}/company/{{ id_company }}/">
+                                    {{ company }}
+                                </a>
+                            </li>
+
+                            <li>
+                                {{ type }}
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="dividerHeading">
+                    <h4><span>Каталог</span></h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-offcanvas row-offcanvas-right">
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <div class="row">
+                    <!-- Наш класс по выводу продукта взят с шаблона http://bootstrap-3.ru/examples/offcanvas/ -->
+                    {% for product in products %}
+                        <div class="col-6 col-sm-6 col-lg-4" style="margin: 10px 0 0 0;">
+                            <!-- Этим дивом выравниваем высоту -->
+                            <div style="height: auto; border: 1px solid #ddd;">
+
+                                <div style="height: auto; border-bottom: 1px solid #ddd; ">
+                                    <img class="img-responsive chain" style="height: 200px; margin: 0 auto; padding: 3em 0;"
+                                         src="/{{ product.avatar|default:"/static/zoom.png" }}" alt="{{ product.name }}">
+                                </div>
+
+                                <div style="height: 370px; padding: 1.5em 1em 0 1.5em; ">
+                                    <h4 style="text-align: center; font-size: 12px;">{{ product.model|default:"Описание отсутствует" }}</h4>
+                                    <!-- |truncatewords:20 ограничивает количество слов выводимое при описании -->
+                                    <!-- Так как у нас все вмещается делаем максимум и оставляем на всякий случай -->
+                                    <hr>
+                                        <div class="pricingTable-header">
+                                            <span class="price-value" style="text-align: center; "><span>{{ product.price|truncatewords:20|default:"Цена отсутствует" }}</span><span class="mo"> руб.</span></span>
+                                        </div>
+                                    <hr>
+                                    <p>Производитель: {{ product.company|truncatewords:20|default:"Описание отсутствует" }}</p>
+                                    <p>{{ product.text|truncatewords:30|default:"Описание отсутствует" }}</p>
+                                </div>
+
+                                <hr>
+                                <div style="padding: 0 1em 1em; ">
+                                    <a class="btn btn-default" href="/tovar/destination/{{ product.destination_id }}/company/{{ product.company_id }}/type/{{ product.type_id }}/model/{{ product.model_id }}/" role="button">Посмотреть »</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% for product in samsung %}
+                        <div class="col-6 col-sm-6 col-lg-4" style="margin: 10px 0 0 0;">
+                            <!-- Этим дивом выравниваем высоту -->
+                            <div style="height: auto; border: 1px solid #ddd;">
+
+                                    <div style="height: 200px; border-bottom: 1px solid #ddd; ">
+                                        <img class="img-responsive chain" style="height: 200px; margin: 0 auto; padding: 3em 0;"
+                                             src="/{{ product.avatar|default:"/static/zoom.png" }}" alt="{{ product.name }}">
+                                    </div>
+
+                                    <div style="height: auto; padding: 1.5em 1em 0 1.5em; ">
+                                        <a href="/tovar/destination/{{ product.destination_id }}/company/{{ product.company_id }}/type/{{ product.type_id }}/model/{{ product.model_id }}/" >
+                                            <h4 style="text-align: center; font-size: 12px;">{{ product.model|default:"Описание отсутствует" }}</h4>
+                                        </a>
+                                        <hr>
+
+                                        <div class="pricingTable-header">
+                                            <span class="price-value" style="text-align: center; "><span>{{ product.price|truncatewords:20|default:"Цена отсутствует" }}</span><span class="mo"> руб.</span></span>
+                                        </div>
+
+                                        <hr>
+                                        <p>Производитель: {{ product.company|truncatewords:20|default:"Описание отсутствует" }}</p>
+                                        <p>{{ product.text|truncatewords:20|default:"Описание отсутствует" }}</p>
+                                        <hr>
+                                        <div style="padding: 0 0 1em; ">
+                                            <a class="btn btn-default"  href="/tovar/destination/{{ product.destination_id }}/company/{{ product.company_id }}/type/{{ product.type_id }}/model/{{ product.model_id }}/" role="button" >Посмотреть »</a>
+                                        </div>
+
+                                        <!-- |truncatewords:20 ограничивает количество слов выводимое при описании -->
+                                        <!-- Так как у нас все вмещается делаем максимум и оставляем на всякий случай -->
+                                    </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% for product in virt %}
+                        <div class="col-6 col-sm-6 col-lg-4" style="margin: 10px 0 0 0;">
+                            <!-- Этим дивом выравниваем высоту -->
+                            <div style="height: 665px; border: 1px solid #ddd;">
+
+                                    <div style="height: 200px; border-bottom: 1px solid #ddd; ">
+                                        <img class="img-responsive chain" style="height: 200px; margin: 0 auto; padding: 3em 0;"
+                                             src="/{{ product.avatar|default:"/static/zoom.png" }}" alt="{{ product.name }}">
+                                    </div>
+
+                                    <div style="height: 420px; padding: 1.5em 1em 0 1.5em; ">
+                                        <a href="/tovar/destination/{{ product.destination_id }}/company/{{ product.company_id }}/type/{{ product.type_id }}/model/{{ product.model_id }}/" >
+                                            <h4 style="text-align: center; font-size: 12px;">{{ product.model|default:"Описание отсутствует" }}</h4>
+                                        </a>
+                                        <hr>
+
+                                        <div class="pricingTable-header">
+                                            <span class="price-value" style="text-align: center; "><span>{{ product.price|truncatewords:20|default:"Цена отсутствует" }}</span><span class="mo"> руб.</span></span>
+                                        </div>
+
+                                        <hr>
+                                        <p>Производитель: {{ product.company|truncatewords:20|default:"Описание отсутствует" }}</p>
+                                        <p>{{ product.text|truncatewords:20|default:"Описание отсутствует" }}</p>
+                                        <hr>
+
+                                        <!-- |truncatewords:20 ограничивает количество слов выводимое при описании -->
+                                        <!-- Так как у нас все вмещается делаем максимум и оставляем на всякий случай -->
+                                    </div>
+
+                                    <div style="padding: 0 1em 1em; ">
+                                        <a class="btn btn-default"  href="/tovar/destination/{{ product.destination_id }}/company/{{ product.company_id }}/type/{{ product.type_id }}/model/{{ product.model_id }}/" role="button" >Посмотреть »</a>
+                                    </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+
+            <div class="col-xs-12 col-md-4 col-lg-4 col-sm-4">
+            <br>
+                <div class="sidebar">
+                    <div class="widget widget_search">
+                        <div class="site-search-area">
+                            <form method="get" id="site-searchform" action="/tovar/search/">
+                                <div>
+                                    <input class="input-text" name="q" id="s" placeholder="Enter Search keywords..." type="text">
+                                    <input id="searchsubmit" value="Search" type="submit">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="widget widget_categories">
+                        <div class="widget_title">
+                            <h4><span>Категории</span></h4>
+                        </div>
+                        <ul class="arrows_list list_style">
+                            {% if infotovars %}
+                                <div class="arrows_list list_style">
+                                    {% for infotovar in infotovars %}
+                                        <li><a href="/tovar/destination/{{ infotovar.pk }}/"> {{ infotovar.name }}</a></li>
+                                    {% endfor %}
+                                </div>
+                            {% elif infotovarscompany %}
+                                <div class="arrows_list list_style">
+                                    {% for infotovar in infotovarscompany %}
+                                        <li>
+                                            <a href="/tovar/destination/{{ id_destination }}/company/{{ infotovar.company }}/">{{ infotovar.company__name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </div>
+                            {% elif infotovarstype %}
+                                <div class="arrows_list list_style">
+                                    {% for infotovar in infotovarstype %}
+                                        <li>
+                                            <a href="/tovar/destination/{{ id_destination }}/company/{{ id_company }}/type/{{ infotovar.type }}/">{{ infotovar.type__name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </div>
+                            {% elif infotovarsmodel %}
+                                <div class="arrows_list list_style">
+                                    {% for infotovar in infotovarsmodel %}
+                                        <li>
+                                            <a href="/tovar/destination/{{ id_destination }}/company/{{ id_company }}/type/{{ id_type }}/model/{{ infotovar.model }}/">{{ infotovar.model__name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+{% endblock %}
+
